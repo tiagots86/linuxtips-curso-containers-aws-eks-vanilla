@@ -8,6 +8,11 @@ variable "region" {
   description = "Nome da região onde os recursos serão entregues"
 }
 
+variable "k8s_version" {
+  type = string
+  default = "1.31"
+}
+
 variable "ssm_vpc" {
   type        = string
   description = "ID do SSM onde está o id da VPC onde o projeto será criado"
