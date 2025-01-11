@@ -24,7 +24,7 @@ ssm_pod_subnets = [
 auto_scale_options = {
   min       = 2
   max       = 10
-  desidered = 2
+  desired = 2
 }
 
 nodes_instance_sizes = [
