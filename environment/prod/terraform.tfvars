@@ -22,8 +22,8 @@ ssm_pod_subnets = [
 ]
 
 auto_scale_options = {
-  min = 2
-  max = 10
+  min       = 2
+  max       = 10
   desidered = 2
 }
 

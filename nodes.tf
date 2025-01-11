@@ -24,7 +24,8 @@ resource "aws_eks_node_group" "main" {
   }
 
   depends_on = [
-    kubernetes_config_map.aws-auth
+    #kubernetes_config_map.aws-auth
+    aws_eks_access_entry.nodes
   ]
 
   lifecycle {
