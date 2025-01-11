@@ -21,3 +21,14 @@ ssm_pod_subnets = [
   "/linuxtips-vpc/subnets/private/us-east-1c/linuxtips-pods-1c"
 ]
 
+auto_scale_options = {
+  min = 2
+  max = 10
+  desidered = 2
+}
+
+nodes_instance_sizes = [
+  "t3.large",
+  "t3a.large"
+]
+

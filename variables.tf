@@ -32,3 +32,17 @@ variable "ssm_pod_subnets" {
   type        = list(string)
   description = "Lista dos ID's do SSM onde estão as subnets de pods do projeto"
 }
+
+variable "auto_scale_options" {
+  type = object({
+    min     = number
+    max     = number
+    desired = number
+  })
+  description = "Configurações de Autoscaling do Cluster"
+}
+
+variable "nodes_instance_sizes" {
+  type        = list(string)
+  description = "Lista de tamanhos das instâncias do projeto"
+}
