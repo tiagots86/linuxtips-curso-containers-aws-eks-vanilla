@@ -1,7 +1,7 @@
-resource "aws_eks_node_group" "main" {
+resource "aws_eks_node_group" "spot" {
 
   cluster_name    = aws_eks_cluster.main.id
-  node_group_name = aws_eks_cluster.main.id
+  node_group_name = format("%s-spot", aws_eks_cluster.main.id)
 
   node_role_arn = aws_iam_role.eks_nodes_role.arn
 
@@ -19,7 +19,7 @@ resource "aws_eks_node_group" "main" {
     "ingress/ready" = "true"
     "capacity/os"   = "AMAZON_LINUX"
     "capacity/arch" = "x86_64"
-    "capacity/type" = "ON_DEMAND"
+    "capacity/type" = "SPOT"
   }
 
   tags = {
@@ -44,6 +44,6 @@ resource "aws_eks_node_group" "main" {
     delete = "2h"
   }
 
-  capacity_type = "ON_DEMAND"
+  capacity_type = "SPOT"
 
 }
