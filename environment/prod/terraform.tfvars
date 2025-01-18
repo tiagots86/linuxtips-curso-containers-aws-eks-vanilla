@@ -22,9 +22,9 @@ ssm_pod_subnets = [
 ]
 
 auto_scale_options = {
-  min       = 2
-  max       = 10
-  desired = 2
+  min     = 1
+  max     = 3
+  desired = 1
 }
 
 nodes_instance_sizes = [

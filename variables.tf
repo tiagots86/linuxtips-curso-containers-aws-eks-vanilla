@@ -49,18 +49,26 @@ variable "nodes_instance_sizes" {
 
 variable "addon_cni_version" {
   type        = string
-  default     = "v1.18.3-eksbuild.2"
+  default     = "v1.19.2-eksbuild.1"
   description = "Versão do Addon da VPC CNI"
 }
 
 variable "addon_coredns_version" {
   type        = string
-  default     = "v1.11.3-eksbuild.1"
+  default     = "v1.11.4-eksbuild.2"
   description = "Versão do Addon do CoreDNS"
 }
 
 variable "addon_kubeproxy_version" {
   type        = string
-  default     = "v1.31.2-eksbuild.3"
+  default     = "v1.31.3-eksbuild.2"
   description = "Versão do Addon do Kube-Proxy"
+}
+
+#### Node Groups - Custom
+
+variable "custom_ami" {
+  type        = string
+  description = "AMI ID customizada para os nodes"
+  default     = "ami-01d396130bcd204a1"
 }
