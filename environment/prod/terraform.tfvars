@@ -45,7 +45,7 @@ karpenter_capacity = [
   },
   {
     name               = "chip-capacity"
-    workload           = "linuxtips-workload"
+    workload           = "chip"
     ami_family         = "Bottlerocket"
     ami_ssm            = "/aws/service/bottlerocket/aws-k8s-1.31/x86_64/latest/image_id"
     instance_family    = ["t3", "t3a", "c6", "c6a", "c7", "c7a"]
@@ -54,8 +54,8 @@ karpenter_capacity = [
     availability_zones = ["us-east-1", "us-east-1b", "us-east-1c"]
   },
   {
-    name               = "chip-capacity"
-    workload           = "linuxtips-workload"
+    name               = "critical"
+    workload           = "critical"
     ami_family         = "Bottlerocket"
     ami_ssm            = "/aws/service/bottlerocket/aws-k8s-1.31/x86_64/latest/image_id"
     instance_family    = ["t3", "t3a", "c6", "c6a", "c7", "c7a"]
