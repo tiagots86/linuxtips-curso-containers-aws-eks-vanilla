@@ -22,6 +22,21 @@ spec:
         name: chip
         version: v1
     spec:
+      nodeSelector:
+        karpenter.sh/nodepool: chip-capacity
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: "topology.kubernetes.io/zone"
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: chip
+      - maxSkew: 1
+        topologyKey: "topology.kubernetes.io/instance-type"
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app: chip
       containers:
       - name: chip
         image: fidelissauro/chip:v1
