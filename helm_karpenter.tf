@@ -27,6 +27,11 @@ resource "helm_release" "karpenter" {
     value = aws_iam_instance_profile.nodes.name
   }
 
+  set {
+    name  = "settings.interruptionQueue"
+    value = aws_sqs_queue.karpenter.name
+  }
+
   depends_on = [
     aws_eks_cluster.main,
     aws_eks_node_group.main
