@@ -41,9 +41,9 @@ spec:
           labelSelector:
             matchLabels:
               app: chip
-      # NodeS Selector direcionando para um NodePool Específico
+      #Node Selector direcionando para um NodePool Específico
       nodeSelector:
-        karpenter.sh/nodepool: linuxtips-chip
+        karpenter.sh/nodepool: chip-capacity
       containers:
       - name: chip
         image: fidelissauro/chip:v1
