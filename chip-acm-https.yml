@@ -104,11 +104,11 @@ metadata:
   namespace: chip
   annotations:
     alb.ingress.kubernetes.io/scheme: "internet-facing" 
-    alb.ingress.kubernetes.io/subnets:   "subnet-xxxxxxxxx,subnet-xxxxxxxxxxx,subnet-xxxxxxxxxxxxxx"
+    alb.ingress.kubernetes.io/subnets:   "subnet-0886707c6b4ce6356,subnet-075b5036b626f0fa0,subnet-04d126b1ac6c22fe4"
     alb.ingress.kubernetes.io/target-type: "ip" 
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]' 
     alb.ingress.kubernetes.io/ssl-redirect: '443'
-    alb.ingress.kubernetes.io/certificate-arn: "xxxxxxxxxxxxxxxxxxxxxxxxxxxx" 
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:481768428259:certificate/6292dc18-3a9b-4597-944c-184586a99e0b" 
     alb.ingress.kubernetes.io/ssl-policy: "ELBSecurityPolicy-2016-08" 
     alb.ingress.kubernetes.io/healthcheck-path: "/liveness"
     alb.ingress.kubernetes.io/healthcheck-port: "traffic-port" 

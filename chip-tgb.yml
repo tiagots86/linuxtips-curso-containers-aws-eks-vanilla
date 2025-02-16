@@ -98,5 +98,5 @@ spec:
   serviceRef:
     name: chip
     port: web
-  targetGroupARN: "xxxxxxxxxxxxxxx"
+  targetGroupARN: "arn:aws:elasticloadbalancing:us-east-1:481768428259:targetgroup/linuxtips-cluster-http/5bb42900e8cfd871"
   targetType: instance
