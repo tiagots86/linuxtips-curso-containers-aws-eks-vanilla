@@ -79,11 +79,11 @@ variable "karpenter_capacity" {
 }
 
 variable "dns_name" {
-  type = string
+  type    = string
   default = "*.tiagots86.com.br"
 }
 
 variable "route53_hosted_zone" {
-  type = string
+  type    = string
   default = "xxxxxxxxxxx"
 }
