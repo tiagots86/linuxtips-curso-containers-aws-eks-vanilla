@@ -85,5 +85,5 @@ variable "dns_name" {
 
 variable "route53_hosted_zone" {
   type    = string
-  default = "xxxxxxxxxxx"
+  default = "Z0995044WFZ9XOC72U0A"
 }

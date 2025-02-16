@@ -104,7 +104,7 @@ metadata:
   namespace: chip
   annotations:
     alb.ingress.kubernetes.io/scheme: "internet-facing" # Expor o ALB publicamente (use "internal" para privado)
-    alb.ingress.kubernetes.io/subnets:  "{SUAS,SUBNETS,AQUI}" # Subnets específicas
+    alb.ingress.kubernetes.io/subnets:  "subnet-0886707c6b4ce6356,subnet-075b5036b626f0fa0,subnet-04d126b1ac6c22fe4" # Subnets específicas
     alb.ingress.kubernetes.io/target-type: "ip" 
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]' 
     alb.ingress.kubernetes.io/healthcheck-path: "/liveness" 
