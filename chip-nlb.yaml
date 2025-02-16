@@ -96,7 +96,7 @@ metadata:
     service.beta.kubernetes.io/aws-load-balancer-healthcheck-healthy-threshold: "3" 
     service.beta.kubernetes.io/aws-load-balancer-healthcheck-unhealthy-threshold: "3" 
     service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: "ip" 
-    service.beta.kubernetes.io/aws-load-balancer-subnets: "subnet-0be2da4a9716bccaf,subnet-05245be7a2569f921,subnet-08c689e88af8331d9" # Subnets específicas
+    service.beta.kubernetes.io/aws-load-balancer-subnets: "{SUAS,SUBNETS,AQUI}" # Subnets específicas
     service.beta.kubernetes.io/aws-load-balancer-attributes: "load_balancing.cross_zone.enabled=true"
 spec:
   ports:
