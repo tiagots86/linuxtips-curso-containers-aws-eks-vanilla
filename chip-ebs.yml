@@ -9,7 +9,7 @@ metadata:
   name: chip-pvc
   namespace: chip
 spec:
-  storageClassName: gp2
+  storageClassName: gp3
   accessModes:
     - ReadWriteOnce
   resources:
