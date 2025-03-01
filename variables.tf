@@ -83,3 +83,10 @@ variable "addon_efs_csi_version" {
   description = "Versão do Addon do EFS CSI"
 
 }
+
+variable "addon_s3_csi_version" {
+  type        = string
+  default     = "v1.11.0-eksbuild.1"
+  description = "Versão do Addon do S3 CSI"
+
+}
