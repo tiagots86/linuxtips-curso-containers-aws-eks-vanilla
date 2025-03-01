@@ -15,7 +15,7 @@ YAML
 
   depends_on = [
     aws_eks_cluster.main,
-    aws_eks_addon.ebs,
+    aws_eks_addon.ebs_csi,
     aws_eks_pod_identity_association.ebs_csi
   ]
 
