@@ -10,7 +10,7 @@ metadata:
 provisioner: efs.csi.aws.com
 parameters:
   provisioningMode: efs-ap
-  fileSystemId: fs-xxxxxxxxxxxxx
+  fileSystemId: fs-0a5ebc6ea6d756105
   directoryPerms: "777"
 reclaimPolicy: Retain
 volumeBindingMode: WaitForFirstConsumer
