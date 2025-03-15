@@ -114,7 +114,7 @@ metadata:
   namespace: chip
   annotations:
     alb.ingress.kubernetes.io/scheme: "internet-facing" 
-    alb.ingress.kubernetes.io/subnets:  "subnet-xxxxxxxxxxxx,subnet-xxxxxxxxxxxxx,subnet-xxxxxxxxxxxxxxxx"
+    alb.ingress.kubernetes.io/subnets:  "subnet-0df3d34375a1bbd1f,subnet-0d215ca235bb55eea,subnet-03910e2413e189629"
     alb.ingress.kubernetes.io/target-type: "ip" 
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}]' 
     alb.ingress.kubernetes.io/healthcheck-path: "/liveness" 
