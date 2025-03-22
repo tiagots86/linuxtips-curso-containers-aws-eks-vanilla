@@ -132,3 +132,9 @@ variable "addon_efs_csi_version" {
   description = "Versão do Addon do EFS CSI"
 
 }
+
+variable "grafana_host" {
+  type        = string
+  default     = "grafana.tiagots86.com.br"
+  description = "Host do Grafana"
+}
