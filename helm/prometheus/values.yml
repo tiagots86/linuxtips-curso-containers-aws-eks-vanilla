@@ -2,6 +2,9 @@ prometheus:
   enabled: true
   prometheusSpec:
 
+    nodeSelector:
+      karpenter.sh/nodepool: "prometheus"
+
     # Storage
     storageSpec:
       volumeClaimTemplate:
@@ -42,6 +45,9 @@ grafana:
       - ReadWriteMany
     size: 10Gi
 
+  nodeSelector:
+    karpenter.sh/nodepool: "prometheus"
+
 prometheusOperator:
   enabled: true
   namespaces: ''
@@ -49,6 +55,9 @@ prometheusOperator:
   prometheusInstanceNamespaces: ''
   alertmanagerInstanceNamespaces: ''
   thanosRulerInstanceNamespaces: ''
+
+  nodeSelector:
+    karpenter.sh/nodepool: "prometheus" 
 
 prometheus-node-exporter:
   affinity:
