@@ -2,6 +2,8 @@ prometheus:
   enabled: true
   prometheusSpec:
 
+    retention: 15d
+
     nodeSelector:
       karpenter.sh/nodepool: "prometheus"
 
