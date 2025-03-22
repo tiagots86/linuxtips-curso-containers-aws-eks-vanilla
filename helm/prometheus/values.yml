@@ -16,7 +16,9 @@ alertmanager:
   enabled: false
 
 grafana:
-  enabled: false
+  enabled: true
+  adminUser: admin
+  adminPassword: linuxtips
 
 prometheusOperator:
   enabled: true
