@@ -119,3 +119,9 @@ variable "nginx_limits_memory" {
   type    = string
   default = "1024Mi"
 }
+
+variable "addon_pod_identity_version" {
+  type        = string
+  default     = "v1.3.4-eksbuild.1"
+  description = "Versão do Addon do Pod Identity"
+}
