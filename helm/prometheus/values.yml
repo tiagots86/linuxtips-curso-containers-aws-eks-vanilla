@@ -1,13 +1,13 @@
+
 prometheus:
   enabled: true
   prometheusSpec:
 
-    retention: 15d
+    retention: 10d
 
     nodeSelector:
       karpenter.sh/nodepool: "prometheus"
 
-    # Storage
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -26,6 +26,9 @@ prometheus:
     serviceMonitorSelectorNilUsesHelmValues: false
     scrapeConfigSelectorNilUsesHelmValues: false
 
+nodeExporter:
+  enabled: true
+
 kubeStateMetrics:
   enabled: false
 
@@ -34,9 +37,6 @@ alertmanager:
 
 grafana:
   enabled: true
-  adminUser: admin
-  adminPassword: linuxtips
-
   initChownData:
     enabled: false
 
@@ -47,8 +47,8 @@ grafana:
       - ReadWriteMany
     size: 10Gi
 
-  nodeSelector:
-    karpenter.sh/nodepool: "prometheus"
+    nodeSelector:
+      karpenter.sh/nodepool: "prometheus"
 
 prometheusOperator:
   enabled: true
@@ -59,7 +59,7 @@ prometheusOperator:
   thanosRulerInstanceNamespaces: ''
 
   nodeSelector:
-    karpenter.sh/nodepool: "prometheus" 
+    karpenter.sh/nodepool: "prometheus"  
 
 prometheus-node-exporter:
   affinity:
