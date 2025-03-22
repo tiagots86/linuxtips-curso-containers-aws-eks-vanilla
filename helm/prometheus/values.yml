@@ -1,0 +1,38 @@
+prometheus:
+  enabled: true
+  prometheusSpec:
+    podMonitorSelector: {}
+    podMonitorSelectorNilUsesHelmValues: false
+    ruleSelector: {}
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+    serviceMonitorSelectorNilUsesHelmValues: false
+    scrapeConfigSelectorNilUsesHelmValues: false
+
+kubeStateMetrics:
+  enabled: false
+
+alertmanager:
+  enabled: false
+
+grafana:
+  enabled: false
+
+prometheusOperator:
+  enabled: true
+  namespaces: ''
+  denyNamespaces: ''
+  prometheusInstanceNamespaces: ''
+  alertmanagerInstanceNamespaces: ''
+  thanosRulerInstanceNamespaces: ''
+
+prometheus-node-exporter:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: "eks.amazonaws.com/compute-type"
+                operator: "NotIn"
+                values:
+                  - "fargate"
