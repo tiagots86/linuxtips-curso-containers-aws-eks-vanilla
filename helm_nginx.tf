@@ -39,7 +39,6 @@ resource "helm_release" "nginx_controller" {
   }
 
   # Capacity
-
   set {
     name  = "controller.resources.requests.cpu"
     value = var.nginx_requests_cpu
@@ -58,6 +57,28 @@ resource "helm_release" "nginx_controller" {
   set {
     name  = "controller.resources.limits.memory"
     value = var.nginx_limits_memory
+  }
+
+  # Service Monitors 
+
+  set {
+    name  = "controller.metrics.enabled"
+    value = "true"
+  }
+
+  set {
+    name  = "controller.metrics.serviceMonitor.enabled"
+    value = "true"
+  }
+
+  set {
+    name  = "controller.podAnnotations.prometheus\\.io/scrape"
+    value = "true"
+  }
+
+  set {
+    name  = "controller.podAnnotations.prometheus\\.io/port"
+    value = "10254"
   }
 
   set {
