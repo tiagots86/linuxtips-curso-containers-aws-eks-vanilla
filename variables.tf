@@ -88,37 +88,37 @@ variable "route53_hosted_zone" {
   default = "Z0995044WFZ9XOC72U0A"
 }
 
-# Nginx
+# # Nginx
 
-variable "nginx_min_replicas" {
-  type    = string
-  default = "3"
-}
+# variable "nginx_min_replicas" {
+#   type    = string
+#   default = "3"
+# }
 
-variable "nginx_max_replicas" {
-  type    = string
-  default = "60"
-}
+# variable "nginx_max_replicas" {
+#   type    = string
+#   default = "60"
+# }
 
-variable "nginx_requests_cpu" {
-  type    = string
-  default = "250m"
-}
+# variable "nginx_requests_cpu" {
+#   type    = string
+#   default = "250m"
+# }
 
-variable "nginx_requests_memory" {
-  type    = string
-  default = "512Mi"
-}
+# variable "nginx_requests_memory" {
+#   type    = string
+#   default = "512Mi"
+# }
 
-variable "nginx_limits_cpu" {
-  type    = string
-  default = "500m"
-}
+# variable "nginx_limits_cpu" {
+#   type    = string
+#   default = "500m"
+# }
 
-variable "nginx_limits_memory" {
-  type    = string
-  default = "1024Mi"
-}
+# variable "nginx_limits_memory" {
+#   type    = string
+#   default = "1024Mi"
+# }
 
 variable "addon_pod_identity_version" {
   type        = string
@@ -137,4 +137,12 @@ variable "grafana_host" {
   type        = string
   default     = "grafana.tiagots86.com.br"
   description = "Host do Grafana"
+}
+
+// Istio
+
+variable "istio_version" {
+  type        = string
+  description = "Versão do Istio"
+  default     = "1.25.0"
 }
