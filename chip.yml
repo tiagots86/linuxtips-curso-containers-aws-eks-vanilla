@@ -164,7 +164,7 @@ spec:
   selector:
     app: chip
   type: ClusterIP
-  ---
+---
 apiVersion: networking.istio.io/v1
 kind: ServiceEntry
 metadata:
