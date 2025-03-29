@@ -46,3 +46,44 @@ resource "helm_release" "prometheus" {
 #   ]
 
 # }
+
+resource "kubectl_manifest" "grafana_gateway" {
+  yaml_body = <<YAML
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: grafana
+  namespace: prometheus
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "${var.grafana_host}" 
+YAML
+}
+
+resource "kubectl_manifest" "grafana_virtual_service" {
+  yaml_body = <<YAML
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: grafana
+  namespace: prometheus
+spec:
+  hosts:
+  - "${var.grafana_host}"
+  gateways:
+  - grafana
+  http:
+  - route:
+    - destination:
+        host: prometheus-grafana
+        port:
+          number: 80 
+YAML
+}
