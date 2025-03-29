@@ -38,6 +38,30 @@ spec:
         host: chip
         port:
           number: 8080 
+    retries:
+      attempts: 3
+      perTryTimeout: 500ms
+      retryOn: 5xx
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: chip
+  namespace: chip
+spec:
+  host: chip.chip.svc.cluster.local
+  trafficPolicy:
+    connectionPool:
+      tcp:
+        maxConnections: 2
+      http:
+        http1MaxPendingRequests: 10
+        maxRequestsPerConnection: 10
+    outlierDetection:
+      consecutive5xxErrors: 100
+      interval: 300ms
+      baseEjectionTime: 60s
+      maxEjectionPercent: 50
 ---
 apiVersion: apps/v1
 kind: Deployment
