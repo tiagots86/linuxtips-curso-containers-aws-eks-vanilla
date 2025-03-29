@@ -164,3 +164,15 @@ variable "jaeger_host" {
   description = "Host do Jaeger"
   default     = "jaeger.tiagots86.com.br"
 }
+
+variable "kiali_host" {
+  type        = string
+  description = "Host do Kiali"
+  default     = "kiali.tiagots86.com.br"
+}
+
+variable "kiali_version" {
+  type        = string
+  description = "value of kiali version"
+  default     = "2.5"
+}
