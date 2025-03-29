@@ -158,3 +158,9 @@ variable "istio_cpu_threshold" {
   description = "value of cpu threshold"
   default     = "60"
 }
+
+variable "jaeger_host" {
+  type        = string
+  description = "Host do Jaeger"
+  default     = "jaeger.tiagots86.com.br"
+}
