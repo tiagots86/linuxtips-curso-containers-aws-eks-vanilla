@@ -620,7 +620,7 @@ spec:
         - name: MESSAGE_TYPE
           value: "sqs"
         - name: SQS_QUEUE_URL
-          value: "https://sqs.us-east-1.amazonaws.com/181560427716/linuxtips-cluster-health"                              
+          value: "https://sqs.us-east-1.amazonaws.com/481768428259/linuxtips-cluster-health"                              
         ports:
         - containerPort: 8080
           name: http   
@@ -670,7 +670,7 @@ spec:
     authenticationRef:
       name: nutrition-aws-credentials  
     metadata:
-      queueURL: "https://sqs.us-east-1.amazonaws.com/181560427716/linuxtips-cluster-health"
+      queueURL: "https://sqs.us-east-1.amazonaws.com/481768428259/linuxtips-cluster-health"
       awsRegion: "us-east-1"
       queueLength: "20"  # <---- Quantidade de mensagens por pod. No exemplo, 50 Mensagens. 
 ---
