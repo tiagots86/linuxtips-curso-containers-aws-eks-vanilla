@@ -221,7 +221,7 @@ spec:
   - type: cron
     metadata:
       timezone: America/Sao_Paulo  
-      start: 30 20 * * *       
-      end: 35 20 * * *         
+      start: 40 10 * * *       
+      end: 45 20 * * *         
       desiredReplicas: "20"
 ---
