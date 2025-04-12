@@ -19,15 +19,15 @@ spec:
     canary: 
       steps:
         - setWeight: 10
-        - pause: {} 
+        - pause: {duration: 30s} 
         - setWeight: 20
-        - pause: {} 
+        - pause: {duration: 30s}  
         - setWeight: 40
-        - pause: {} 
+        - pause: {duration: 30s} 
         - setWeight: 80
-        - pause: {} 
+        - pause:  {duration: 30s} 
         - setWeight: 100
-        - pause: {} 
+        - pause:  {duration: 30s} 
   replicas: 10
   selector:
     matchLabels:
@@ -37,7 +37,7 @@ spec:
       labels:
         app: chip
         name: chip
-        version: v2
+        version: v3
     spec:
       topologySpreadConstraints:
       - maxSkew: 1
@@ -92,7 +92,7 @@ spec:
         - name: CHAOS_MONKEY_MEMORY
           value: "true"    
         - name: VERSION
-          value: "v2"                                              
+          value: "v3"                                              
       terminationGracePeriodSeconds: 60
 ---
 apiVersion: networking.istio.io/v1alpha3
