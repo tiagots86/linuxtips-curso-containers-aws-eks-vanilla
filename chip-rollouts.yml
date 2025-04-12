@@ -6,6 +6,29 @@ metadata:
     istio-injection: enabled
 ---
 apiVersion: argoproj.io/v1alpha1
+kind: AnalysisTemplate
+metadata:
+  name: chip-success-rate
+  namespace: chip
+spec:
+  metrics:
+    - name: success-rate
+      interval: 2m
+      successCondition: result[0] >= 0.95
+      failureLimit: 0
+      provider:
+        prometheus:
+          address: http://prometheus-kube-prometheus-prometheus.prometheus.svc.cluster.local:9090
+          query: |
+            sum(irate(
+              istio_requests_total{destination_service=~"chip.chip.svc.cluster.local",response_code!~"5.*"}[5m]
+            )) /
+            sum(irate(
+              istio_requests_total{destination_service=~"chip.chip.svc.cluster.local"}[5m]
+            ))
+      count: 1
+---
+apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   labels:
@@ -19,15 +42,21 @@ spec:
     canary: 
       steps:
         - setWeight: 10
-        - pause: {duration: 30s} 
-        - setWeight: 20
-        - pause: {duration: 30s}  
+        - pause: {duration: 60s}
+        - analysis:
+            templates:
+              - templateName: chip-success-rate
         - setWeight: 40
-        - pause: {duration: 30s} 
+        - pause: {duration: 30s}
+        - analysis:
+            templates:
+              - templateName: chip-success-rate        
         - setWeight: 80
-        - pause:  {duration: 30s} 
+        - pause: {duration: 30s}
+        - analysis:
+            templates:
+              - templateName: chip-success-rate        
         - setWeight: 100
-        - pause:  {duration: 30s} 
   replicas: 10
   selector:
     matchLabels:
@@ -37,7 +66,7 @@ spec:
       labels:
         app: chip
         name: chip
-        version: v3
+        version: v4
     spec:
       topologySpreadConstraints:
       - maxSkew: 1
@@ -92,7 +121,7 @@ spec:
         - name: CHAOS_MONKEY_MEMORY
           value: "true"    
         - name: VERSION
-          value: "v3"                                              
+          value: "v4"                                              
       terminationGracePeriodSeconds: 60
 ---
 apiVersion: networking.istio.io/v1alpha3
