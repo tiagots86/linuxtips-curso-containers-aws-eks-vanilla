@@ -8,30 +8,6 @@ metadata:
 apiVersion: argoproj.io/v1alpha1
 kind: AnalysisTemplate
 metadata:
-  name: chip-warm-up-operation
-  namespace: chip
-spec:
-  metrics:
-  - name: k6-stack-warm-up
-    failureLimit: 0
-    provider:
-      job:
-        spec:
-          backoffLimit: 1
-          template:
-            metadata:
-              labels:
-                istio-injection: disabled
-                sidecar.istio.io/inject: "false"
-            spec:
-              containers:
-              - name: k6-stack-warm-up
-                image: fidelissauro/chip-test-green:latest
-              restartPolicy: Never
----
-apiVersion: argoproj.io/v1alpha1
-kind: AnalysisTemplate
-metadata:
   name: chip-success-rate
   namespace: chip
 spec:
@@ -45,10 +21,10 @@ spec:
           address: http://prometheus-kube-prometheus-prometheus.prometheus.svc.cluster.local:9090
           query: |
             sum(irate(
-              istio_requests_total{destination_service=~"chip-green.chip.svc.cluster.local",response_code!~"5.*"}[1m]
+              istio_requests_total{destination_service=~"chip.chip.svc.cluster.local",response_code!~"5.*"}[5m]
             )) /
             sum(irate(
-              istio_requests_total{destination_service=~"chip-green.chip.svc.cluster.local"}[1m]
+              istio_requests_total{destination_service=~"chip.chip.svc.cluster.local"}[5m]
             ))
       count: 1
 ---
@@ -63,16 +39,25 @@ spec:
   # Canary Release Manual
   revisionHistoryLimit: 3
   strategy:
-    blueGreen: 
-      activeService: chip
-      previewService: chip-green
-      autoPromotionEnabled: true
-      scaleDownDelaySeconds: 30
-      prePromotionAnalysis:
-        templates:
-        - templateName: chip-warm-up-operation
-        - templateName: chip-success-rate
-  replicas: 5
+    canary: 
+      steps:
+        - setWeight: 10
+        - pause: {duration: 60s}
+        - analysis:
+            templates:
+              - templateName: chip-success-rate
+        - setWeight: 40
+        - pause: {duration: 30s}
+        - analysis:
+            templates:
+              - templateName: chip-success-rate        
+        - setWeight: 80
+        - pause: {duration: 30s}
+        - analysis:
+            templates:
+              - templateName: chip-success-rate        
+        - setWeight: 100
+  replicas: 10
   selector:
     matchLabels:
       app: chip
@@ -81,7 +66,7 @@ spec:
       labels:
         app: chip
         name: chip
-        version: v10
+        version: v4
     spec:
       topologySpreadConstraints:
       - maxSkew: 1
@@ -136,7 +121,7 @@ spec:
         - name: CHAOS_MONKEY_MEMORY
           value: "true"    
         - name: VERSION
-          value: "v10"                                              
+          value: "v4"                                              
       terminationGracePeriodSeconds: 60
 ---
 apiVersion: networking.istio.io/v1alpha3
@@ -173,45 +158,6 @@ spec:
         port:
           number: 8080 
     retries:
-      attempts: 1
-      perTryTimeout: 10500ms
-      retryOn: connect-failure,refused-stream
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: chip
-  namespace: chip 
-  labels:
-    app.kubernetes.io/name: chip
-    app.kubernetes.io/instance: chip 
-spec:
-  ports:
-  - name: web
-    port: 8080
-    protocol: TCP
-  selector:
-    app: chip
-  type: ClusterIP
----
-apiVersion: networking.istio.io/v1alpha3
-kind: VirtualService
-metadata:
-  name: chip-green
-  namespace: chip
-spec:
-  hosts:
-  - "chip-green.chip.svc.cluster.local"
-  - "chip-green.tiagots86.com.br"
-  gateways:
-  - chip
-  http:
-  - route:
-    - destination:
-        host: chip-green
-        port:
-          number: 8080 
-    retries:
       attempts: 3
       perTryTimeout: 10500ms
       retryOn: 5xx
@@ -219,7 +165,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: chip-green
+  name: chip
   namespace: chip 
   labels:
     app.kubernetes.io/name: chip
