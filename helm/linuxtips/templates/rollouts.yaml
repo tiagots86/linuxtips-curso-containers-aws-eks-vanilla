@@ -72,9 +72,10 @@ spec:
             cpu: {{ .Values.app.capacity.limits.cpu }}
             memory: {{ .Values.app.capacity.limits.memory }}
 
+      {{- if .Values.app.capacity.nodepool.enabled}}
       nodeSelector:
-        karpenter.sh/nodepool: "general"
-
+        karpenter.sh/nodepool: {{ .Values.app.capacity.nodepool.name }}
+      {{- end}}
       terminationGracePeriodSeconds: 60
   
       topologySpreadConstraints:

@@ -27,6 +27,10 @@ app:
     autoscaling:
       min: 1
       max: 5
+    nodepool:
+      enabled: false
+      name: general
+
   rollout:
     revisionHistoryLimit: 3
     version: v1
