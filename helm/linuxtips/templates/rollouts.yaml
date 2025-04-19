@@ -1,0 +1,79 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ .Values.app.name }}
+  naamespace: {{ .Values.app.namespace }}
+  labels:
+    app: {{ .Values.app.name }}
+spec:
+  replicas: {{ .Values.app.capacity.autoscaling.min }}
+  revisionHistoryLimit: {{ .Values.app.rollout.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.name }}
+  strategy:
+    {{- if .Values.app.rollout.strategy.canary.enabled }}
+    
+    {{- end}}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.name }}
+        name: {{ .Values.app.name }}
+        version: {{ .Values.app.rollout.version }}
+    spec:
+      containers:
+      - env:
+        - name: CHAOS_MONKEY_ENABLED
+          value: "false"
+        - name: CHAOS_MONKEY_MODE
+          value: critical
+        - name: CHAOS_MONKEY_LATENCY
+          value: "true"
+        - name: CHAOS_MONKEY_EXCEPTION
+          value: "true"
+        - name: CHAOS_MONKEY_APP_KILLER
+          value: "true"
+        - name: CHAOS_MONKEY_MEMORY
+          value: "true"
+        - name: VERSION
+          value: v4
+        image: fidelissauro/chip:v1
+        livenessProbe:
+          failureThreshold: 10
+          httpGet:
+            httpHeaders:
+            - name: Custom-Header
+              value: Awesome
+            path: /liveness
+            port: 8080
+          periodSeconds: 10
+        name: chip
+        ports:
+{{- range .Values.app.ports }}
+        - containerPort: {{ .targetPort}}
+          name: {{ .name}}
+{{- end}}
+        resources:
+          limits:
+            cpu: 250m
+            memory: 512Mi
+          requests:
+            cpu: 250m
+            memory: 512Mi
+        startupProbe:
+          failureThreshold: 10
+          httpGet:
+            path: /readiness
+            port: 8080
+          periodSeconds: 10
+      nodeSelector:
+        karpenter.sh/nodepool: general
+      terminationGracePeriodSeconds: 60
+      topologySpreadConstraints:
+      - labelSelector:
+          matchLabels:
+            app: chip
+        maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
