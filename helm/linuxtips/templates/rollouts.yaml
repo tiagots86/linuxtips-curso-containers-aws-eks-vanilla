@@ -23,22 +23,27 @@ spec:
         version: {{ .Values.app.rollout.version }}
     spec:
       containers:
-      - env:
-        - name: CHAOS_MONKEY_ENABLED
-          value: "false"
-        - name: CHAOS_MONKEY_MODE
-          value: critical
-        - name: CHAOS_MONKEY_LATENCY
-          value: "true"
-        - name: CHAOS_MONKEY_EXCEPTION
-          value: "true"
-        - name: CHAOS_MONKEY_APP_KILLER
-          value: "true"
-        - name: CHAOS_MONKEY_MEMORY
-          value: "true"
-        - name: VERSION
-          value: v4
-        image: fidelissauro/chip:v1
+      - name: {{ .Values.app.name }}
+        image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
+        imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+        env:
+        {{- toYaml .Values.app.envs | nindent 8 }}
+        {{- if .Values.app.probes.livenessProbe.enabled}}
+        startupProbe:
+          failureThreshold: {{ .Values.app.probes.startupProbe.failureThreshold}}
+          httpGet:
+            path: {{ .Values.app.probes.startupProbe.httpGet.path}}
+            port: {{ .Values.app.probes.startupProbe.httpGet.port}}
+          periodSeconds: {{ .Values.app.probes.startupProbe.periodSeconds}}
+        {{- end}}
+        {{- if .Values.app.probes.readinessProbe.enabled}}
+        readinessProbe:
+          failureThreshold: {{ .Values.app.probes.readinessProbe.failureThreshold}}
+          httpGet:
+            path: {{ .Values.app.probes.readinessProbe.httpGet.path}}
+            port: {{ .Values.app.probes.readinessProbe.httpGet.port}}
+          periodSeconds: {{ .Values.app.probes.readinessProbe.periodSeconds}}
+        {{- end}}
         {{- if .Values.app.probes.livenessProbe.enabled}}
         livenessProbe:
           failureThreshold: {{ .Values.app.probes.livenessProbe.failureThreshold}}
@@ -47,7 +52,6 @@ spec:
             port: {{ .Values.app.probes.livenessProbe.httpGet.port}}
           periodSeconds: {{ .Values.app.probes.livenessProbe.periodSeconds}}
         {{- end}}
-        name: chip
         ports:
 {{- range .Values.app.ports }}
         - containerPort: {{ .targetPort}}

@@ -1,6 +1,10 @@
 app:
   name: linuxtips
   namespace: linuxtips
+  image:
+    repository: fidelissauro/chip
+    tag: v1
+    pullPolicy: IfNotPresent
   createNamespace: true
   iam: ""
 
@@ -62,4 +66,19 @@ app:
       periodSeconds: 10
       httpGet:
         path: /
-        port: 80   
+        port: 80
+  envs:
+    - name: CHAOS_MONKEY_ENABLED
+      value: "false"
+    - name: CHAOS_MONKEY_MODE
+      value: critical
+    - name: CHAOS_MONKEY_LATENCY
+      value: "true"
+    - name: CHAOS_MONKEY_EXCEPTION
+      value: "true"
+    - name: CHAOS_MONKEY_APP_KILLER
+      value: "true"
+    - name: CHAOS_MONKEY_MEMORY
+      value: "true"
+    - name: VERSION
+      value: v4
