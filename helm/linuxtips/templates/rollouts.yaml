@@ -77,7 +77,18 @@ spec:
         karpenter.sh/nodepool: {{ .Values.app.capacity.nodepool.name }}
       {{- end}}
       terminationGracePeriodSeconds: 60
-  
+
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                    - {{ .Values.app.name }}
+            topologyKey: kubernetes.io/hostname
+            weight: 100
       topologySpreadConstraints:
       - labelSelector:
           matchLabels:
