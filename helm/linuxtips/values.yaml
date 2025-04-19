@@ -40,3 +40,26 @@ app:
           - pause: {duration: 30s}
           - setWeight: 100
           - pause: {duration: 30s}
+  
+  probes:
+    startupProbe:
+      enabled: true
+      failureThreshold: 10
+      periodSeconds: 10
+      httpGet:
+        path: /
+        port: 80
+    readinessProbe:
+      enabled: true
+      failureThreshold: 10
+      periodSeconds: 10
+      httpGet:
+        path: /
+        port: 80
+    livenessProbe:
+      enabled: true
+      failureThreshold: 10
+      periodSeconds: 10
+      httpGet:
+        path: /
+        port: 80   

@@ -39,15 +39,14 @@ spec:
         - name: VERSION
           value: v4
         image: fidelissauro/chip:v1
+        {{- if .Values.app.probes.livenessProbe.enabled}}
         livenessProbe:
-          failureThreshold: 10
+          failureThreshold: {{ .Values.app.probes.livenessProbe.failureThreshold}}
           httpGet:
-            httpHeaders:
-            - name: Custom-Header
-              value: Awesome
-            path: /liveness
-            port: 8080
-          periodSeconds: 10
+            path: {{ .Values.app.probes.livenessProbe.httpGet.path}}
+            port: {{ .Values.app.probes.livenessProbe.httpGet.port}}
+          periodSeconds: {{ .Values.app.probes.livenessProbe.periodSeconds}}
+        {{- end}}
         name: chip
         ports:
 {{- range .Values.app.ports }}
@@ -55,18 +54,12 @@ spec:
           name: {{ .name}}
 {{- end}}
         resources:
-          limits:
-            cpu: 250m
-            memory: 512Mi
           requests:
-            cpu: 250m
-            memory: 512Mi
-        startupProbe:
-          failureThreshold: 10
-          httpGet:
-            path: /readiness
-            port: 8080
-          periodSeconds: 10
+            cpu: {{ .Values.app.capacity.requests.cpu }}
+            memory: {{ .Values.app.capacity.requests.memory }}
+          limits:
+            cpu: {{ .Values.app.capacity.limits.cpu }}
+            memory: {{ .Values.app.capacity.limits.memory }}
       nodeSelector:
         karpenter.sh/nodepool: general
       terminationGracePeriodSeconds: 60
