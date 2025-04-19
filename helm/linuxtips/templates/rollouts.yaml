@@ -2,7 +2,7 @@ apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
   name: {{ .Values.app.name }}
-  naamespace: {{ .Values.app.namespace }}
+  namespace: {{ .Values.app.namespace }}
   labels:
     app: {{ .Values.app.name }}
 spec:
@@ -13,7 +13,9 @@ spec:
       app: {{ .Values.app.name }}
   strategy:
     {{- if .Values.app.rollout.strategy.canary.enabled }}
-    
+    canary:
+      steps:
+      {{ toYaml .Values.app.rollout.strategy.canary.steps | nindent 6 }}
     {{- end}}
   template:
     metadata:
@@ -26,51 +28,66 @@ spec:
       - name: {{ .Values.app.name }}
         image: {{ .Values.app.image.repository }}:{{ .Values.app.image.tag }}
         imagePullPolicy: {{ .Values.app.image.pullPolicy }}
+        
         env:
-        {{- toYaml .Values.app.envs | nindent 8 }}
-        {{- if .Values.app.probes.livenessProbe.enabled}}
+          {{- toYaml .Values.app.envs | nindent 8 }}
+
+        {{- if .Values.app.probes.startupProbe.enabled }}
         startupProbe:
-          failureThreshold: {{ .Values.app.probes.startupProbe.failureThreshold}}
+          failureThreshold: {{ .Values.app.probes.startupProbe.failureThreshold }}
           httpGet:
-            path: {{ .Values.app.probes.startupProbe.httpGet.path}}
-            port: {{ .Values.app.probes.startupProbe.httpGet.port}}
-          periodSeconds: {{ .Values.app.probes.startupProbe.periodSeconds}}
-        {{- end}}
-        {{- if .Values.app.probes.readinessProbe.enabled}}
+            path: {{ .Values.app.probes.startupProbe.httpGet.path }}
+            port: {{ .Values.app.probes.startupProbe.httpGet.port }}
+          periodSeconds: {{ .Values.app.probes.startupProbe.periodSeconds }}
+        {{- end }}
+
+
+        {{- if .Values.app.probes.readinessProbe.enabled }}
         readinessProbe:
-          failureThreshold: {{ .Values.app.probes.readinessProbe.failureThreshold}}
+          failureThreshold: {{ .Values.app.probes.readinessProbe.failureThreshold }}
           httpGet:
-            path: {{ .Values.app.probes.readinessProbe.httpGet.path}}
-            port: {{ .Values.app.probes.readinessProbe.httpGet.port}}
-          periodSeconds: {{ .Values.app.probes.readinessProbe.periodSeconds}}
-        {{- end}}
-        {{- if .Values.app.probes.livenessProbe.enabled}}
+            path: {{ .Values.app.probes.readinessProbe.httpGet.path }}
+            port: {{ .Values.app.probes.readinessProbe.httpGet.port }}
+          periodSeconds: {{ .Values.app.probes.readinessProbe.periodSeconds }}
+        {{- end }}
+
+        {{- if .Values.app.probes.livenessProbe.enabled }}
         livenessProbe:
-          failureThreshold: {{ .Values.app.probes.livenessProbe.failureThreshold}}
+          failureThreshold: {{ .Values.app.probes.livenessProbe.failureThreshold }}
           httpGet:
-            path: {{ .Values.app.probes.livenessProbe.httpGet.path}}
-            port: {{ .Values.app.probes.livenessProbe.httpGet.port}}
-          periodSeconds: {{ .Values.app.probes.livenessProbe.periodSeconds}}
-        {{- end}}
+            path: {{ .Values.app.probes.livenessProbe.httpGet.path }}
+            port: {{ .Values.app.probes.livenessProbe.httpGet.port }}
+          periodSeconds: {{ .Values.app.probes.livenessProbe.periodSeconds }}
+        {{- end }}
         ports:
-{{- range .Values.app.ports }}
+{{- range .Values.app.ports}}
         - containerPort: {{ .targetPort}}
           name: {{ .name}}
 {{- end}}
         resources:
           requests:
             cpu: {{ .Values.app.capacity.requests.cpu }}
-            memory: {{ .Values.app.capacity.requests.memory }}
+            memory: {{ .Values.app.capacity.requests.memory }}        
           limits:
             cpu: {{ .Values.app.capacity.limits.cpu }}
             memory: {{ .Values.app.capacity.limits.memory }}
+
       nodeSelector:
-        karpenter.sh/nodepool: general
+        karpenter.sh/nodepool: "general"
+
       terminationGracePeriodSeconds: 60
+  
       topologySpreadConstraints:
       - labelSelector:
           matchLabels:
-            app: chip
+            app: {{ .Values.app.name }}
         maxSkew: 1
         topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+
+      - labelSelector:
+          matchLabels:
+            app: {{ .Values.app.name }}
+        maxSkew: 1
+        topologyKey: kubernetes.io/hostname
         whenUnsatisfiable: ScheduleAnyway
