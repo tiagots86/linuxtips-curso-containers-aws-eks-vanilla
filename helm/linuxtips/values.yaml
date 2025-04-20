@@ -126,6 +126,14 @@ app:
           perTryTimeout: 2s
           retryOn: 5xx
 
+  prometheus:
+    serviceMonitor:
+      enabled: true
+      interval: 30s
+      scrapeTimeout: 10s
+      port: http
+      path: /metrics
+      
   keda: 
     enabled: true
 
