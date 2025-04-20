@@ -86,3 +86,20 @@ app:
       value: "true"
     - name: VERSION
       value: v4
+
+  istio:
+    host: linuxtips.tiagots86.com.br
+    gateway:
+      enabled: true
+      protocol: HTTP
+      port: 80
+
+    virtualService:
+      enabled: true
+      http:
+        enabled: true
+        port: 80
+        retries:
+          attempts: 1
+          perTryTimeout: 2s
+          retryOn: 5xx
