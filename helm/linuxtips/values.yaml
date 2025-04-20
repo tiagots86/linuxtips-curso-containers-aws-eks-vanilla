@@ -40,6 +40,9 @@ app:
         steps:
           - setWeight: 20
           - pause: {duration: 30s}
+          - analysis:
+              templates:
+                - istio-success
           - setWeight: 40
           - pause: {duration: 30s}
           - setWeight: 60
