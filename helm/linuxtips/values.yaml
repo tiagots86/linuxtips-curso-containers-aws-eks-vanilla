@@ -126,3 +126,46 @@ app:
           perTryTimeout: 2s
           retryOn: 5xx
 
+  keda: 
+    enabled: true
+
+    hpaConfig:
+      behavior:
+        scaleDown:
+          stabilizationWindowSeconds: 20
+        scaleUp:
+          stabilizationWindowSeconds: 20
+      cooldownPeriod: 30
+      pollingInterval: 10
+
+    prometheus:
+    # - name: keda-scale-tps
+    #   metricName: istio_requests_total
+    #   query: "sum(rate(istio_requests_total{destination_service_name=\"linuxtips\"}[1m]))"
+    #   serverAddress: http://prometheus-kube-prometheus-prometheus.prometheus.svc.cluster.local:9090
+    #   threshold: "10"
+
+    cron:
+    # - name: scale-up
+    #   start: 40 14 * * *       
+    #   end: 40 18 * * *         
+    #   timezone: "America/Sao_Paulo"
+    #   desiredReplicas: 20
+
+    memory:
+    # - name: memory-high
+    #   metricType: Utilization
+    #   threshold: 80
+
+    sqs:
+    # - name: queue-high
+    #   metricType: Utilization
+    #   awsRegion: us-east-1
+    #   queueURL: https://sqs.us-east-1.amazonaws.com/123456789012/MyQueue
+    #   queueLength: 50
+
+    cpu:
+    - name: cpu-high
+      metricType: Utilization
+      threshold: 80
+
