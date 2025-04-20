@@ -48,6 +48,25 @@ app:
           - pause: {duration: 30s}
           - setWeight: 100
           - pause: {duration: 30s}
+    analysisTemplates:
+    - name: 'istio-success'
+      spec:
+        metrics:
+        - name: success-rate
+          interval: 2m
+          failureLimit: 0
+          successCondition: result[0] >= 0.95
+          count: 1
+          provider:
+            prometheus:
+              address: http://prometheus-kube-prometheus-prometheus.prometheus.svc.cluster.local:9090
+              query: |
+                sum(irate(
+                  istio_requests_total{destination_service=~"linuxtips.linuxtips.svc.cluster.local",response_code!~"5.*"}[1m]
+                )) /
+                sum(irate(
+                  istio_requests_total{destination_service=~"linuxtips.linuxtips.svc.cluster.local"}[1m]
+                ))
   
   probes:
     startupProbe:
@@ -103,3 +122,4 @@ app:
           attempts: 1
           perTryTimeout: 2s
           retryOn: 5xx
+
