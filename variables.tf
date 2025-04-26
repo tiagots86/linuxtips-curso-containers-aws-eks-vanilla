@@ -199,3 +199,11 @@ variable "argo_rollouts_host" {
   default     = "argo-rollouts.tiagots86.com.br"
   description = "Host do Argo Rollouts"
 }
+
+// ArgoCD
+
+variable "argocd_host" {
+  type        = string
+  default     = "argocd.tiagots86.com.br"
+  description = "Host do ArgoCD"
+}
